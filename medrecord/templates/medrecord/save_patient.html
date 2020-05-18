@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Save patient</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+
+    <style type="text/css">
+        body {
+            background-color: #ececec;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="ui error message">
+            <div class="header">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+
+        <form class="ui large form" action="{% url 'medrecord:save_patient'%}" method="post">
+            {% csrf_token %}
+
+            <div class="ui segment">
+                <h2 class="ui orange header">
+                    <div class="content">
+                        Patient data
+                    </div>
+                </h2>
+                <div class="field">
+                    <div class="ui input">
+                        <input type="text" step=any placeholder="First name" name="first_name" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui input">
+                        <input type="text" step=any placeholder="Last name" name="last_name" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui input">
+                        <input type="number" step=1 placeholder="PESEL" name="pesel">
+                    </div>
+                </div>
+
+                <div class="field">
+
+                    <textarea class="ui" placeholder="Chronic conditions"></textarea>
+                </div>
+                <button class="ui fluid large orange submit button" type="submit">Save data</button>
+            </div>
+
+        </form>
+        <a href="{% url 'medrecord:index' %}">Go back to main page</a>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
