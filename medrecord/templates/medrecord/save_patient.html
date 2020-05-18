@@ -20,6 +20,8 @@
         }
 
 
+
+
     </style>
 
 
@@ -61,13 +63,17 @@
                 </div>
                 <div class="field">
                     <div class="ui input">
-                        <input type="number" step=1 placeholder="PESEL" name="pesel">
+                        <input type="number" step=1 placeholder="PESEL" name="pesel" minlength="11" maxlength="11"
+                               required>
                     </div>
                 </div>
 
                 <div class="field">
 
-                    <textarea class="ui" placeholder="Chronic conditions"></textarea>
+                    <textarea class="ui" placeholder="Chronic conditions" name="chronic_conditions"></textarea>
+                </div>
+                <div class="field">
+                    <input type="file" name="file_path"/>
                 </div>
                 <button class="ui fluid large orange submit button" type="submit">Save data</button>
             </div>
