@@ -19,6 +19,12 @@
             max-width: 450px;
         }
 
+        .left-aligned-checkboxes {
+             text-align: left;
+        }
+
+
+
 
 
 
@@ -30,7 +36,7 @@
 <body>
 
 <div class="ui middle aligned center aligned grid">
-    <div class="column">
+    <div class="sixteen wide column">
         {% if messages %}
         {% for message in messages %}
         <div class="ui error message">
@@ -41,11 +47,11 @@
         {% endfor %}
 
         {% endif %}
+        <div class="ui segment">
 
-        <form class="ui large form" action="{% url 'medrecord:save_patient'%}" method="post">
-            {% csrf_token %}
+            <form class="ui large form" action="{% url 'medrecord:save_patient'%}" method="post">
+                {% csrf_token %}
 
-            <div class="ui segment">
                 <h2 class="ui orange header">
                     <div class="content">
                         Patient data
@@ -67,21 +73,59 @@
                                required>
                     </div>
                 </div>
-
-                <div class="field">
-
-                    <textarea class="ui" placeholder="Chronic conditions" name="chronic_conditions"></textarea>
+                <div class="field ">
+                    <div class="grouped fields left-aligned-checkboxes">
+                        <label>Clinics</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="cariology">
+                                <label>Cardiology</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="dentist">
+                                <label>Dentist</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="orthopedic">
+                                <label>Orthopedic</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="Dermatology">
+                                <label>Dermatology</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="field">
-                    <input type="file" name="file_path"/>
+
+                    <textarea class="ui" rows="2" placeholder="Chronic conditions" name="chronic_conditions"></textarea>
+                </div>
+
+<!--                <div class="field">-->
+<!--                    <input type="file" class="ui fluid orange  button" name="file_path"/>-->
+<!--                </div>-->
+                <div class="field">
+                    <div>
+                        <label for="file" class="ui icon fluid button">
+                            <i class="file icon"></i>
+                            Choose File</label>
+                        <input type="file" id="file" name="file_path" style="display:none">
+                    </div>
                 </div>
                 <button class="ui fluid large orange submit button" type="submit">Save data</button>
-            </div>
 
-        </form>
+            </form>
+        </div>
         <a href="{% url 'medrecord:index' %}">Go back to main page</a>
-
     </div>
+
 </div>
 
 
