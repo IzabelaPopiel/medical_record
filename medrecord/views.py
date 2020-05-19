@@ -40,7 +40,7 @@ def save_request_data(request):
     chronic_conditions = request.POST.get('chronic_conditions')
     file_path = request.POST.get('file_path')
     if not os.path.isfile(file_path) and '.csv' not in file_path:
-        raise FileNotFoundError('No such a csv file')
+        raise FileNotFoundError('Incorrect csv file name')
 
     patient = [first_name, last_name, pesel, ', '.join(clinics), chronic_conditions]
 
