@@ -2,15 +2,37 @@ import csv
 import os
 
 from django.contrib import messages
-from django.http import HttpResponse
 from django.shortcuts import render
 
 
 def index(request):
+    """Renders 'medrecord/index.html'.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+
+    """
     return render(request, 'medrecord/index.html')
 
 
 def save_patient(request):
+    """Reads and analyze request and saves patient data in csv file.
+
+            Calls saving function with POST request arguement, renders medrecord/save_patient.html
+            with info about successful saving data or about error.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+
+                Returns
+                -------
+                    render
+                        Result of rendering medrecord/save_patient.html.
+    """
     if request.method == "POST":
         try:
             save_request_data(request)
@@ -22,6 +44,23 @@ def save_patient(request):
 
 
 def save_request_data(request):
+    """Writes patient data to csv file.
+
+            Gets values from POST request, checks if they are correct, writes data to cvs file.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+
+                Raises
+                ------
+                ValueError
+                    If PESEL length is not 11.
+                FileNotFoundError
+                    If file not exists or is not .csv.
+
+    """
     print(request)
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
@@ -51,10 +90,39 @@ def save_request_data(request):
 
 
 def open_file(request):
+    """Renders 'medrecord/open_file.html'.
+
+        Parameters
+        ----------
+        request: WSGIRequest
+            Request.
+
+    """
     return render(request, 'medrecord/open_file.html')
 
 
 def opened_record(request):
+    """Reads and analyze request and renders meancalc/result.html with calculated value.
+
+            Gets file path from POST request, checks if it is correct, reads given file,
+            saves in structure of list and dictionaries to display data in table.
+            If error occurs displays proper information.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+
+                Raises
+                ------
+                FileNotFoundError
+                    If file not exists or is not .csv.
+
+                Returns
+                -------
+                    render
+                        Result of rendering meancalc/result.html with read data in context
+    """
     print(request)
     if request.method == 'POST':
         try:
