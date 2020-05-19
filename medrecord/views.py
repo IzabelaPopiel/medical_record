@@ -50,8 +50,8 @@ def save_request_data(request):
     return
 
 
-def open_patient(request):
-    return render(request, 'medrecord/open_patient.html')
+def open_file(request):
+    return render(request, 'medrecord/open_file.html')
 
 
 def opened_record(request):
@@ -83,6 +83,6 @@ def opened_record(request):
             return render(request, 'medrecord/opened_record.html', {'record': record})
         except (ValueError, FileNotFoundError) as ex:
             messages.error(request, ex)
-            return render(request, 'medrecord/open_patient.html')
+            return render(request, 'medrecord/open_file.html')
 
     return render(request, 'medrecord/opened_record.html')
