@@ -45,25 +45,28 @@ def open_patient(request):
 def opened_record(request):
     print(request)
     if request.method == 'POST':
-        file_path = request.POST.get('file_path')
-        print('file_path')
-        print(file_path)
-        if not os.path.isfile(file_path) and '.csv' not in file_path:
-            raise FileNotFoundError('No such a csv file')
+        try:
+            file_path = request.POST.get('file_path')
+            print('file_path')
+            print(file_path)
+            if not os.path.isfile(file_path) and '.csv' not in file_path:
+                raise FileNotFoundError('Incorrect csv file name')
 
-        with open(file_path, mode='r') as record_file:
-            record_file = csv.reader(record_file, delimiter=',', quotechar='"')
-            record = []
-            for row in record_file:
-                row_dict = {
-                    'first_name': row[0],
-                    'last_name': row[1],
-                    'pesel': row[2],
-                    'clinics': row[3],
-                    'chronic_conditions': row[4]
-                }
-                record.append(row_dict)
-                print(row_dict)
-        return render(request, 'medrecord/opened_record.html', {'record': record})
+            with open(file_path, mode='r') as record_file:
+                record_file = csv.reader(record_file, delimiter=',', quotechar='"')
+                record = []
+                for row in record_file:
+                    row_dict = {
+                        'first_name': row[0],
+                        'last_name': row[1],
+                        'pesel': row[2],
+                        'clinics': row[3],
+                        'chronic_conditions': row[4]
+                    }
+                    record.append(row_dict)
+            return render(request, 'medrecord/opened_record.html', {'record': record})
+        except (ValueError, FileNotFoundError) as ex:
+            messages.error(request, ex)
+            return render(request, 'medrecord/open_patient.html')
 
     return render(request, 'medrecord/opened_record.html')
