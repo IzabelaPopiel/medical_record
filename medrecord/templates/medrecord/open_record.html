@@ -67,7 +67,7 @@
                     <th>PESEL</th>
                     <th>Clinics</th>
                     <th>Chronic conditions</th>
-                    <th>Actions</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -79,9 +79,7 @@
                     <td data-label="PESEL">{{patient.pesel}}</td>
                     <td data-label="Clinics">{{patient.clinics}}</td>
                     <td data-label="Chronic conditions">{{patient.chronic_conditions}}</td>
-                    <td data-label="Actions">
-                        <a href="/edit/{{ patient.id }}"><i class="edit outline icon"></i>
-                        </a>
+                    <td data-label="Delete">
                         <a href="/medrecord/delete/{{ patient.id }}"><i class="trash alternate outline icon"></i></a>
                     </td>
                     {% endfor %}

@@ -101,10 +101,6 @@ def open_record(request):
     return render(request, 'medrecord/open_record.html', {'patients': patients})
 
 
-def edit(request):
-    return
-
-
 def delete(request, id):
     """Removes patient by their id.
 
