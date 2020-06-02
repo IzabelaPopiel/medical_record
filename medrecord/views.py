@@ -109,9 +109,17 @@ def open_record(request):
     print(request)
     try:
         patients = Patient.objects.order_by('id')
-        return render(request, 'medrecord/open_record.html', {'record': patients})
+        return render(request, 'medrecord/open_record.html', {'patients': patients})
     except (ValueError, FileNotFoundError) as ex:
         messages.error(request, ex)
         return render(request, 'medrecord/open_file.html')
 
     return render(request, 'medrecord/open_record.html')
+
+
+def edit(request):
+    return
+
+
+def delete(reqest):
+    return
