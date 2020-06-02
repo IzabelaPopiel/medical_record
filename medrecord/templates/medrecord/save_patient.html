@@ -34,7 +34,17 @@
 </head>
 
 <body>
-
+<div class="ui pointing menu">
+  <a class="item" href="{% url 'medrecord:index' %}">
+    Home
+  </a>
+  <a class="active orange item" href="{% url 'medrecord:save_patient' %}">
+    Save data
+  </a>
+  <a class="item" href="{% url 'medrecord:open_file' %}">
+    Open data
+  </a>
+</div>
 <div class="ui middle aligned center aligned grid">
     <div class="sixteen wide column">
         {% if messages %}
