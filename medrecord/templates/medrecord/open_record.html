@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Opened record</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+
+    <style type="text/css">
+        body {
+            background-color: #ececec;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .column {
+            max-width: 80vw;
+        }
+
+
+
+
+
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+<div class="ui pointing menu huge">
+    <a class="item" href="{% url 'medrecord:index' %}">
+        Home
+    </a>
+    <a class="item" href="{% url 'medrecord:save_patient' %}">
+        Save data
+    </a>
+    <a class="active orange item" href="{% url 'medrecord:open_record' %}">
+        Open data
+    </a>
+</div>
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="ui error message">
+            <div class="header">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+
+        <div class="ui segment">
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>PESEL</th>
+                    <th>Clinics</th>
+                    <th>Chronic conditions</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td data-label="First name">{{patient.id}}</td>
+                    <td data-label="First name">{{patient.first_name}}</td>
+                    <td data-label="Last name">{{patient.last_name}}</td>
+                    <td data-label="PESEL">{{patient.pesel}}</td>
+                    <td data-label="Clinics">{{patient.clinics}}</td>
+                    <td data-label="Chronic conditions">{{patient.chronic_conditions}}</td>
+                    <td data-label="Actions">
+                        <a href="/edit/{{ patient.id }}"><i class="edit outline icon"></i>
+                        </a>
+                        <a href="/medrecord/delete/{{ patient.id }}"><i class="trash alternate outline icon"></i></a>
+                    </td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
