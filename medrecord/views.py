@@ -45,7 +45,7 @@ def save_patient(request):
 def save_request_data(request):
     """Writes patient data to csv file.
 
-            Gets values from POST request, checks if they are correct, writes data to cvs file.
+            Gets values from POST request, checks if they are correct, saves data to database.
 
                 Parameters
                 ----------
@@ -56,8 +56,6 @@ def save_request_data(request):
                 ------
                 ValueError
                     If PESEL length is not 11.
-                FileNotFoundError
-                    If file not exists or is not .csv.
 
     """
     print(request)
@@ -85,36 +83,22 @@ def save_request_data(request):
 
 
 def open_record(request):
-    """Reads and analyze request and renders meancalc/result.html with calculated value.
+    """Displays all patients from database.
 
-            Gets file path from POST request, checks if it is correct, reads given file,
-            saves in structure of list and dictionaries to display data in table.
-            If error occurs displays proper information.
+            Gets all Patient model objects and send then in context to display in table.
 
                 Parameters
                 ----------
                 request: WSGIRequest
                     Request.
 
-                Raises
-                ------
-                FileNotFoundError
-                    If file not exists or is not .csv.
-
                 Returns
                 -------
                     render
-                        Result of rendering meancalc/result.html with read data in context
+                        Result of rendering medrecord/open_record.html with patients data in context
     """
-    print(request)
-    try:
-        patients = Patient.objects.order_by('id')
-        return render(request, 'medrecord/open_record.html', {'patients': patients})
-    except (ValueError, FileNotFoundError) as ex:
-        messages.error(request, ex)
-        return render(request, 'medrecord/open_file.html')
-
-    return render(request, 'medrecord/open_record.html')
+    patients = Patient.objects.all()
+    return render(request, 'medrecord/open_record.html', {'patients': patients})
 
 
 def edit(request):
@@ -122,7 +106,22 @@ def edit(request):
 
 
 def delete(request, id):
+    """Removes patient by their id.
+
+            Gets Patient model object by id and deletes it, then redirects to /medrecord/open_record.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+                id: int
+                    Patient's id.
+
+                Returns
+                -------
+                redirect
+                    Redirecting to  medrecord/open_record.html
+    """
     patient = Patient.objects.get(id=id)
     patient.delete()
     return redirect("/medrecord/open_record")
-    return
