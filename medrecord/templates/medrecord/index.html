@@ -16,52 +16,40 @@
         }
 
         .column {
-            max-width: 450px;
+            max-width: 900px;
         }
 
-
-
-
-
-
-
+        .welcome_text {
+            font-size: 80px;
+        }
 
     </style>
 </head>
 
 <body>
 
-<div class="ui pointing menu">
-  <a class="active orange item" href="{% url 'medrecord:index' %}">
-    Home
-  </a>
-  <a class="item" href="{% url 'medrecord:save_patient' %}">
-    Save data
-  </a>
-  <a class="item" href="{% url 'medrecord:open_file' %}">
-    Open data
-  </a>
+<div class="ui pointing menu huge">
+    <a class="active orange item" href="{% url 'medrecord:index' %}">
+        Home
+    </a>
+    <a class="item" href="{% url 'medrecord:save_patient' %}">
+        Save data
+    </a>
+    <a class="item" href="{% url 'medrecord:open_file' %}">
+        Open data
+    </a>
 </div>
 
 <div class="ui middle aligned center aligned grid">
+    
     <div class="column">
-        <div class="ui segment">
-            <h2 class="ui orange header">
+       <h2 class="ui orange header">
                 <div class="content">
-                    Medical record
+                    <h1 class="welcome_text">
+                        Welcome!
+                    </h1>
                 </div>
             </h2>
-            <div class="field">
-                <div class="ui grid">
-                    <div class="eight wide column">
-                        <a href="{% url 'medrecord:save_patient' %}" class="ui fluid large orange submit button" type="submit">Save data</a>
-                    </div>
-                    <div class="eight wide column">
-                        <a href="{% url 'medrecord:open_file' %}" class="ui fluid large orange submit button" type="submit">Open data</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 </body>
