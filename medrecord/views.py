@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from medrecord.models import Patient
 
@@ -121,5 +121,8 @@ def edit(request):
     return
 
 
-def delete(reqest):
+def delete(request, id):
+    patient = Patient.objects.get(id=id)
+    patient.delete()
+    return redirect("/medrecord/open_record")
     return
