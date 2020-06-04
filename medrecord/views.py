@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 
 from medrecord.models import Patient
@@ -74,6 +75,8 @@ def save_request_data(request):
     if 'dermatology' in request.POST:
         clinics.append(request.POST.get('dermatology'))
     chronic_conditions = request.POST.get('chronic_conditions')
+    if len(chronic_conditions) > 1000:
+        raise ValueError("Chronic conditions must be shorter than 1000 characters")
 
     p = Patient(first_name=first_name, last_name=last_name, pesel=pesel, clinics=', '.join(clinics),
                 chronic_conditions=chronic_conditions)
@@ -118,6 +121,9 @@ def delete(request, id):
                 redirect
                     Redirecting to  medrecord/open_record.html
     """
-    patient = Patient.objects.get(id=id)
-    patient.delete()
+    try:
+        patient = Patient.objects.get(id=id)
+        patient.delete()
+    except ObjectDoesNotExist:
+        pass
     return redirect("/medrecord/open_record")
