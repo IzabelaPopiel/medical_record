@@ -46,40 +46,30 @@
 
 <div class="ui middle aligned center aligned grid">
     <div class="column">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="ui error message">
-            <div class="header">
-                {{ message }}
-            </div>
-        </div>
-        {% endfor %}
-
-        {% endif %}
 
         <div class="ui segment">
-            <table class="ui celled table">
+            <table class="ui fixed celled striped top aligned table">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>PESEL</th>
-                    <th>Clinics</th>
-                    <th>Chronic conditions</th>
-                    <th>Delete</th>
+                    <th class="one wide">ID</th>
+                    <th class="two wide">First name</th>
+                    <th class="two wide">Last name</th>
+                    <th class="two wide">PESEL</th>
+                    <th class="two wide">Clinics</th>
+                    <th class="five wide">Chronic conditions</th>
+                    <th class="one wide center aligned">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for patient in patients %}
                 <tr>
-                    <td data-label="First name">{{patient.id}}</td>
+                    <td data-label="ID">{{patient.id}}</td>
                     <td data-label="First name">{{patient.first_name}}</td>
                     <td data-label="Last name">{{patient.last_name}}</td>
                     <td data-label="PESEL">{{patient.pesel}}</td>
                     <td data-label="Clinics">{{patient.clinics}}</td>
                     <td data-label="Chronic conditions">{{patient.chronic_conditions}}</td>
-                    <td data-label="Delete">
+                    <td data-label="Delete" class="center aligned">
                         <a href="/medrecord/delete/{{ patient.id }}"><i class="trash alternate outline icon"></i></a>
                     </td>
                     {% endfor %}
