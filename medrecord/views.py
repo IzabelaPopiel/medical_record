@@ -7,7 +7,7 @@ from medrecord.models import Patient
 
 
 def index(request):
-    """Renders 'medrecord/index.html'.
+    """Clears session and renders 'medrecord/index.html'.
 
                 Parameters
                 ----------
@@ -19,79 +19,10 @@ def index(request):
     return render(request, 'medrecord/index.html')
 
 
-# def save_patient(request):
-#     """Reads and analyze request and saves patient data in csv file.
-#
-#             Calls saving function with POST request arguement, renders medrecord/personal_info.html
-#             with info about successful saving data or about error.
-#
-#                 Parameters
-#                 ----------
-#                 request: WSGIRequest
-#                     Request.
-#
-#                 Returns
-#                 -------
-#                     render
-#                         Result of rendering medrecord/personal_info.html.
-#     """
-#     clear_session(request)
-#     if request.method == "POST":
-#         try:
-#             save_request_data(request)
-#             messages.success(request, "Data saved successfully")
-#
-#         except (ValueError, FileNotFoundError) as ex:
-#             messages.error(request, ex)
-#     return render(request, 'medrecord/personal_info.html')
-
-
-# def save_request_data(request):
-#     """Writes patient data to csv file.
-#
-#             Gets values from POST request, checks if they are correct, saves data to database.
-#
-#                 Parameters
-#                 ----------
-#                 request: WSGIRequest
-#                     Request.
-#
-#                 Raises
-#                 ------
-#                 ValueError
-#                     If PESEL length is not 11.
-#
-#     """
-#     print(request)
-#     first_name = request.POST.get('first_name')
-#     last_name = request.POST.get('last_name')
-#     pesel = request.POST.get('pesel')
-#     if len(pesel) != 11:
-#         raise ValueError("PESEL length must be 11")
-#     clinics = []
-#     if 'cardiology' in request.POST:
-#         clinics.append(request.POST.get('cardiology'))
-#     if 'dentist' in request.POST:
-#         clinics.append(request.POST.get('dentist'))
-#     if 'orthopedic' in request.POST:
-#         clinics.append(request.POST.get('orthopedic'))
-#     if 'dermatology' in request.POST:
-#         clinics.append(request.POST.get('dermatology'))
-#     chronic_conditions = request.POST.get('chronic_conditions')
-#     if len(chronic_conditions) > 1000:
-#         raise ValueError("Chronic conditions must be shorter than 1000 characters")
-#
-#     p = Patient(first_name=first_name, last_name=last_name, pesel=pesel, clinics=', '.join(clinics),
-#                 chronic_conditions=chronic_conditions)
-#     p.save()
-#
-#     return
-
-
 def open_record(request):
-    """Displays all patients from database.
+    """Clears session and displays all patients from database.
 
-            Gets all Patient model objects and send then in context to display in table.
+            Clears session data. Gets all Patient model objects and send then in context to display in table.
 
                 Parameters
                 ----------
@@ -124,7 +55,7 @@ def delete(request, id):
                 Returns
                 -------
                 redirect
-                    Redirecting to  medrecord/open_record.html
+                    Redirecting to  /medrecord/open_record
     """
     try:
         patient = Patient.objects.get(id=id)
@@ -135,10 +66,37 @@ def delete(request, id):
 
 
 def personal_info(request):
+    """Renders 'medrecord/personal_info.html'.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+    """
     return render(request, 'medrecord/personal_info.html')
 
 
 def check_personal_info(request):
+    """Checks if first name, last name i pesel are correct.
+
+            Gets values from POST request, checks if they are correct, saves data in session.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+            Raises
+            ------
+            ValueError
+                If PESEL length is not 11.
+
+            Returns
+            -------
+            redirect
+                Result of redirect to /medrecord/clinics.
+    """
     if request.method == "POST":
         try:
             first_name = request.POST.get('first_name')
@@ -148,7 +106,7 @@ def check_personal_info(request):
             pesel = request.POST.get('pesel')
             if len(pesel) != 11:
                 raise ValueError("PESEL length must be 11")
-        except (ValueError, FileNotFoundError) as ex:
+        except ValueError as ex:
             messages.error(request, ex)
             return render(request, 'medrecord/personal_info.html')
 
@@ -160,10 +118,38 @@ def check_personal_info(request):
 
 
 def clinics(request):
+    """Renders 'medrecord/clinics.html'.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+    """
     return render(request, 'medrecord/clinics.html')
 
 
 def check_clinics(request):
+    """Checks if clinics input is correct.
+
+            Gets values from checked clinics. Converts read values into string and saves in session.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+            Raises
+            ------
+            ValueError
+                If PESEL length is not 11.
+
+            Returns
+            -------
+            redirect
+                Result of redirect to medrecord:chronic_conditions.
+    """
+
     if request.method == "POST":
         try:
             clinics = []
@@ -177,37 +163,74 @@ def check_clinics(request):
                 clinics.append(request.POST.get('dermatology'))
             clinics = ', '.join(clinics)
             request.session['clinics'] = clinics
-        except (ValueError, FileNotFoundError) as ex:
+        except ValueError as ex:
             messages.error(request, ex)
             return render(request, 'medrecord/clinics.html')
 
-        # return render(request, 'medrecord/clinics.html')
     return redirect('medrecord:chronic_conditions')
 
 
 def chronic_conditions(request):
+    """Renders 'medrecord/chronic_conditions.html'.
+
+                Parameters
+                ----------
+                request: WSGIRequest
+                    Request.
+
+    """
     return render(request, 'medrecord/chronic_conditions.html')
 
 
 def check_chronic_conditions(request):
+    """Checks if chronic conditions input is correct.
+
+            Checks if chronic conditions input is correct. Then saves it to session data.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+            Raises
+            ------
+            ValueError
+                If chronic conditions length is more than 1000.
+
+            Returns
+            -------
+            redirect
+                Result of redirect to medrecord:save_data.
+    """
     if request.method == "POST":
         try:
             chronic_conditions = request.POST.get('chronic_conditions')
-            request.session['chronic_conditions'] = chronic_conditions
-
             if len(chronic_conditions) > 1000:
                 raise ValueError("Chronic conditions must be shorter than 1000 characters")
+            request.session['chronic_conditions'] = chronic_conditions
 
-        except (ValueError, FileNotFoundError) as ex:
+        except ValueError as ex:
             messages.error(request, ex)
             return render(request, 'medrecord/chronic_conditions.html')
 
-        # return render(request, 'medrecord/clinics.html')
     return redirect('medrecord:save_data')
 
 
 def save_data(request):
-    # saving data to DB
+    """Saves patient to database.
+
+        Creates Patient model object from session data. Then saves object to database.
+
+        Parameters
+        ----------
+        request: WSGIRequest
+            Request.
+
+        Returns
+        -------
+        redirect
+            Result of redirect to medrecord:open_record.
+    """
     p = Patient(first_name=request.session.get('first_name'), last_name=request.session.get('last_name'),
                 pesel=request.session.get('pesel'), clinics=request.session.get('clinics'),
                 chronic_conditions=request.session.get('chronic_conditions'))
@@ -220,6 +243,16 @@ def save_data(request):
 
 
 def clear_session(request):
+    """Clears session data.
+
+            Removes values for all keys in session.
+
+            Parameters
+            ----------
+            request: WSGIRequest
+                Request.
+
+    """
 
     for key in list(request.session.keys()):
         del request.session[key]
