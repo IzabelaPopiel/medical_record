@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Save patient</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+
+    <style type="text/css">
+        body {
+            background-color: #ececec;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .column {
+            max-width: 550px;
+        }
+
+        .left-aligned-checkboxes {
+             text-align: left;
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+<div class="ui pointing menu huge">
+    <a class="item" href="{% url 'medrecord:index' %}">
+        Home
+    </a>
+    <a class="active orange item" href="{% url 'medrecord:personal_info' %}">
+        Save data
+    </a>
+    <a class="item" href="{% url 'medrecord:open_record' %}">
+        Open data
+    </a>
+</div>
+<div class="ui middle aligned center aligned grid">
+    <div class="sixteen wide column">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="ui error message">
+            <div class="header">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+        <div class="ui clearing segment">
+
+            <form class="ui large form" action="{% url 'medrecord:check_clinics'%}" method="post">
+                {% csrf_token %}
+
+                <div class="ui mini fluid steps">
+                    <div class="completed  step">
+                        <i class="user outline icon"></i>
+                        <div class="content">
+                            <div class="title orange">Personal info</div>
+                        </div>
+                    </div>
+                    <div class="active step">
+                        <i class="hospital outline icon"></i>
+                        <div class="content">
+                            <div class="title">Clinics</div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="stethoscope icon"></i>
+                        <div class="content">
+                            <div class="title">Chronic conditions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="grouped fields left-aligned-checkboxes">
+                        <label>Clinics</label>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                {% if 'cardiology' in request.session.clinics %}
+                                <input type="checkbox" name="cardiology" value="cardiology" checked>
+                                {% else %}
+                                <input type="checkbox" name="cardiology" value="cardiology">
+                                {% endif %}
+                                <label>Cardiology</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                {% if 'dentist' in request.session.clinics %}
+                                <input type="checkbox" name="dentist" value="dentist" checked>
+                                {% else %}
+                                <input type="checkbox" name="dentist" value="dentist">
+                                {% endif %}
+                                <label>Dentist</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                {% if 'orthopedic' in request.session.clinics %}
+                                <input type="checkbox" name="orthopedic" value="orthopedic" checked>
+                                {% else %}
+                                <input type="checkbox" name="orthopedic" value="orthopedic">
+                                {% endif %}
+                                <label>Orthopedic</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                 {% if 'dermatology' in request.session.clinics %}
+                                <input type="checkbox" name="dermatology" value="dermatology" checked>
+                                {% else %}
+                                <input type="checkbox" name="dermatology" value="dermatology">
+                                {% endif %}
+                                <label>Dermatology</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="ui left floated large button">
+                    <a href="/medrecord/personal_info" class="ui left floated">
+                        <i class="angle left icon"> </i>
+                        Back
+                    </a>
+                </div>
+                <button class="ui right floated large orange submit button" type="submit">Next <i
+                        class="angle right icon"> </i>
+                </button>
+
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
